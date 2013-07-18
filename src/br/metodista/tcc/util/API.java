@@ -11,16 +11,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.os.Bundle;
-import android.os.Looper;
 import android.util.Log;
 
 @SuppressLint("SimpleDateFormat")
 public class API {
+	private static boolean rodar = true;
+
 	public static void acessaURL(String host, int port, String param) {
 		Log.i("Servico", "entrou acessa URL: url => " + host + ":" + port + param);
 		try {
@@ -28,11 +24,11 @@ public class API {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setConnectTimeout(60000);
             conn.setReadTimeout(60000);
-            conn.getResponseCode(); // Utilizado para solicitar a resposta
+            conn.getResponseCode(); //Utilizado para solicitar a resposta
             conn.disconnect();
-        } catch (MalformedURLException e){
+        } catch (MalformedURLException e) {
             System.out.println("Erro ao criar URL. Formato inválido.");
-        } catch (IOException e){
+        } catch (IOException e) {
             System.out.println("Erro ao Acessar a URL => " + e.getMessage());
             e.printStackTrace(System.out);
         }
@@ -55,7 +51,6 @@ public class API {
         	e.printStackTrace(System.out);
         }
 
-        //System.out.println(json.toString());
         return Base64.encodeBytes(json.toString().getBytes());
     }
 
@@ -76,41 +71,16 @@ public class API {
     	return 1;
     }
 
-    public static Location getCoord(Context ctx){
-    	final String locProvider = LocationManager.GPS_PROVIDER; //NETWORK_PROVIDER
-    	LocationManager lm = (LocationManager) ctx.getSystemService(Context.LOCATION_SERVICE);
-    	Location coord = lm.getLastKnownLocation(locProvider);
-    	return coord;
-    }
-
     public static void enviarSinal(int imei, int user, double lat, double lng) {
+    	Log.i("Servico", "Enviando sinal...");
     	acessaURL(getUrl(), getPort(), "/sinal/" + geraParametros(imei, user, lat, lng));
     }
 
-    public static void atualizarPosicao(final Context ctx){
-    	new Thread(new Runnable() {
-		    public void run() {
-		    	Looper.prepare();
-		    	final String locProvider = LocationManager.GPS_PROVIDER; //NETWORK_PROVIDER
-		    	LocationManager lm = (LocationManager) ctx.getSystemService(Context.LOCATION_SERVICE);
-		    	LocationListener ll = new LocationListener() {
-		    		@Override
-		            public void onLocationChanged(final Location coord) {
-		            	Log.i("Servico", "Atualizou posição");
-		            	LocationManager lm = (LocationManager) ctx.getSystemService(Context.LOCATION_SERVICE);
-		            	lm.removeUpdates(this);
-		            }
-		            @Override
-		            public void onStatusChanged(final String provider, final int status, final Bundle extras) {}
-		            @Override
-		            public void onProviderEnabled(final String provider) {}
-		            @Override
-		            public void onProviderDisabled(final String provider) {}
-		        };
-		        lm.requestLocationUpdates(locProvider, 0, 0, ll);
-		        Looper.loop();
-		        Looper.myLooper().quit();
-		    }
-		}).start();
-    }
+	public static boolean getRodar() {
+		return rodar;
+	}
+
+	public static void setRodar(boolean bool) {
+		rodar = bool;
+	}
 }
