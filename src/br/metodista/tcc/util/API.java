@@ -1,9 +1,5 @@
 package br.metodista.tcc.util;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -11,30 +7,24 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.widget.Toast;
+import br.metodista.tcc.geoequipe.EnviarSinal;
 
 @SuppressLint("SimpleDateFormat")
 public class API {
-	private static boolean rodar = true;
+	private boolean rodar;
+	private Context ctx;
 
-	public static void acessaURL(String host, int port, String param) {
-		Log.i("Servico", "entrou acessa URL: url => " + host + ":" + port + param);
-		try {
-            URL url = new URL(host + ":" + port + param);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setConnectTimeout(60000);
-            conn.setReadTimeout(60000);
-            conn.getResponseCode(); //Utilizado para solicitar a resposta
-            conn.disconnect();
-        } catch (MalformedURLException e) {
-            System.out.println("Erro ao criar URL. Formato inválido.");
-        } catch (IOException e) {
-            System.out.println("Erro ao Acessar a URL => " + e.getMessage());
-            e.printStackTrace(System.out);
-        }
-    }
+	public API(Context _context){
+		this.ctx = _context;
+		this.rodar = true;
+		//Toast.makeText(ctx, "Criou API", Toast.LENGTH_SHORT).show();
+	}
 
-    public static String geraParametros(int imei, int user, double lat, double lng) {
+    public String geraParametros(String imei, int user, double lat, double lng) {
 
         JSONObject json = new JSONObject();
         try {
@@ -54,33 +44,41 @@ public class API {
         return Base64.encodeBytes(json.toString().getBytes());
     }
 
-    public static String getUrl(){
-    	return "http://10.0.2.2";
+    public String getHost(){
+    	//return "http://10.0.2.2";
+    	return "http://geoequipe.aws.af.cm";
     }
 
-    public static int getPort(){
-    	return 3014;
+    public int getPort(){
+    	//return 3014;
+    	return 80;
     }
 
-    public static int getIMEI(){
-    	//return android.telephony.TelephonyManager.getDeviceId();
-    	return 111111111;
+    public String getUrl(String param){
+    	return getHost() + ":" + getPort() + param;
     }
 
-    public static int getUser(){
+    public String getIMEI(){
+    	TelephonyManager tm = (TelephonyManager) ctx.getSystemService(Context.TELEPHONY_SERVICE);
+    	Log.i("Servico", "IMEI: " + tm.getDeviceId());
+    	return tm.getDeviceId();
+    	//return 111111111;
+    }
+
+    public int getUser(){
     	return 1;
     }
 
-    public static void enviarSinal(int imei, int user, double lat, double lng) {
+    public void enviarSinal(String imei, int user, double lat, double lng) {
     	Log.i("Servico", "Enviando sinal...");
-    	acessaURL(getUrl(), getPort(), "/sinal/" + geraParametros(imei, user, lat, lng));
+    	new EnviarSinal(this.ctx).execute(getUrl("/sinal/" + geraParametros(imei, user, lat, lng)));
     }
 
-	public static boolean getRodar() {
+	public boolean getRodar() {
 		return rodar;
 	}
 
-	public static void setRodar(boolean bool) {
+	public void setRodar(boolean bool) {
 		rodar = bool;
 	}
 }

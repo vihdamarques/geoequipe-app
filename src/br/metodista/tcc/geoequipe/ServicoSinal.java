@@ -4,24 +4,30 @@ import br.metodista.tcc.util.API;
 import br.metodista.tcc.util.Callback;
 import br.metodista.tcc.util.Geolocation;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.os.IBinder;
 import android.util.Log;
+import android.widget.Toast;
 
 public class ServicoSinal extends Service implements Runnable {
 
 	public void onCreate() {
 		super.onCreate();
+		final Context ctx = this;
+		Toast.makeText(ctx, "Iniciou serviço...", Toast.LENGTH_SHORT).show();
 		Log.i("Servico", "Iniciou serviço");
-		Geolocation geo = new Geolocation();
-    	geo.getLocation(this, new Callback<Location>() {
+		Geolocation geo = new Geolocation(this);
+    	geo.getLocation(new Callback<Location>() {
 			public void run(Location coord) {
+				//Toast.makeText(ctx, "Pegou localização", Toast.LENGTH_SHORT).show();
 				Log.i("Servico", "Resposta sinal. coord: " + coord);
 				if (coord != null) {
-					API.enviarSinal (
-						API.getIMEI()
-					   ,API.getUser()
+					API api = new API(ctx);
+					api.enviarSinal (
+						api.getIMEI()
+					   ,api.getUser()
 					   ,coord.getLatitude()
 					   ,coord.getLongitude()
 					);
@@ -32,9 +38,10 @@ public class ServicoSinal extends Service implements Runnable {
 
 	@Override
 	public void run() {
+		/*API api = new API(this);
 		while (true) {
-			if (API.getRodar()) {
-				API.setRodar(false);
+			if (api.getRodar()) {
+				api.setRodar(false);
 				Geolocation geo = new Geolocation();
 		    	geo.getLocation(this, new Callback<Location>() {
 					@Override
@@ -52,7 +59,7 @@ public class ServicoSinal extends Service implements Runnable {
 				});
 			}
 			try { Thread.sleep(30 * 1000); } catch (InterruptedException e) {}
-		}
+		}*/
 	}
 	
 	@Override
