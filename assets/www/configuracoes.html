@@ -7,23 +7,22 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <title></title>
   
+  
+  
   <link rel="stylesheet" href="css/jquery.mobile-1.3.1.min.css">
-
+  
+  <!-- Extra Codiqa features -->
+  <link rel="stylesheet" href="css/codiqa.ext.css">
+  
   <!-- jQuery and jQuery Mobile -->
   <script src="js/jquery-1.9.1.min.js"></script>
   <script src="js/jquery.mobile-1.3.1.min.js"></script>
-  
+
   <!-- Extra Codiqa features -->
   <script src="js/codiqa.ext.js"></script>
   
   <!-- Arquivos Geoequipe -->
   <script src="js/geoequipe.js"></script>
-  
-  <script type="text/javascript">
-    var login = localStorage.getItem('usuario');
-	if (login) { window.location = "lista_tarefas.html"; };
-  </script>
-
    
 </head>
 <body>
@@ -31,31 +30,31 @@
 <div data-role="page" id="page1">
     <div data-theme="a" data-role="header">
         <h3>
-            LOGIN
+            Configurações
         </h3>
     </div>
-    <div data-role="content" id="result">
-        <div data-role="fieldcontain">
-            <label for="textinput1">
-                Usuário
-            </label>
-            <input name="usuario" id="textinput1" placeholder="" value="" type="text" data-mini="true">
-        </div>
-        <div data-role="fieldcontain">
-            <label for="textinput2">
-                Senha
-            </label>
-            <input name="senha" id="textinput2" placeholder="" value="" type="password" data-mini="true">
-        </div>
-        <a id="btn_entrar" data-role="button" data-inline="true" data-theme="b" href="#" data-icon="arrow-r" data-iconpos="right" onclick="login();">
-            Entrar
+    <div data-role="content">
+        <a data-role="button" data-inline="true" data-theme="b" href="index.html" data-icon="delete" data-iconpos="left" onclick="limpa_sessao()">
+            Fazer Logoff
         </a>
+        <div data-role="fieldcontain">
+            <label for="toggleswitch1">
+                Envio de Sinal
+            </label>
+            <select name="toggleswitch1" id="toggleswitch1" data-theme="" data-role="slider">
+                <option value="off">
+                    Off
+                </option>
+                <option value="on">
+                    On
+                </option>
+            </select>
+        </div>
+		
     </div>
-	
 </div>
 <script type="text/javascript">
             app.initialize();
         </script>
-
 </body>
 </html>
