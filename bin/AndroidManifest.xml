@@ -47,13 +47,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
-        <!-- receiver android:name=".IniciarApp">
-      		<intent-filter>
-          		<action android:name="android.intent.action.BOOT_COMPLETED" />
-          		<category android:name="android.intent.category.DEFAULT" />
-      		</intent-filter>
-  		</receiver -->
 
         <receiver android:name=".AlarmManagerSinal">
             <intent-filter>
@@ -64,10 +57,6 @@
         </receiver>
 
         <service android:name=".ServicoSinal" android:enabled="true" />
-	 		<!--  intent-filter>
-		 		<action android:name="SERVICO_SINAL" />
-		 		<category android:name="android.intent.category.DEFAULT" />
-		 	</intent-filter>
-		</service -->
+		<service android:name=".ServicoNotificacao" android:enabled="true" />
     </application>
-</manifest> 
+</manifest>

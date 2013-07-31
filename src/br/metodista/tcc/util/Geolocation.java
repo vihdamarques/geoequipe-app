@@ -72,7 +72,7 @@ public class Geolocation {
     LocationListener ll = new LocationListener() {
         public void onLocationChanged(Location location) {
         	Log.i("Servico", "Recebeu Sinal: " + location);
-        	Toast.makeText(context, "Recebeu Sinal: " + location + " \n Total de sinais: " + sinais.size(), Toast.LENGTH_LONG).show();
+        	Toast.makeText(context, "Recebeu Sinal: " + location + " \n Total de sinais: " + (sinais.size() + 1), Toast.LENGTH_LONG).show();
         	if (sinais.size() < 7) {
         		if (location.getAccuracy() < 50) {
         			Log.i("Servico", "adicionou sinal no array");
