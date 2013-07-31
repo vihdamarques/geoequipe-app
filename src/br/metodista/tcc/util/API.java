@@ -8,6 +8,8 @@ import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import br.metodista.tcc.geoequipe.EnviarSinal;
@@ -19,6 +21,7 @@ public class API {
 	private String  host = "http://geoequipe.aws.af.cm"; // http://10.0.2.2
 	private int     port = 80; // 3014
 	private String  key  = "G3@#qU1p";
+	private Handler handler = new Handler(Looper.getMainLooper());
 
 	public API(Context _ctx){
 		this.ctx   = _ctx;
@@ -45,13 +48,17 @@ public class API {
         //return Base64.encodeBytes(json.toString().getBytes());
     }
 
-    public void enviarSinal(String imei, int user, double lat, double lng) {
+    public void enviarSinal(final String imei, final int user, final double lat, final double lng) {
     	Log.i("Servico", "Enviando sinal...");
-    	new EnviarSinal(this.ctx)
-    	   .execute(getUrl("/sinal/" + geraParametros(imei, user, lat, lng)
-    			                      .replaceAll("\\/", "_")
-    			                      .replaceAll("\\+", "-")
-    			                      ));
+    	handler.post(new Runnable() {
+            public void run() {
+		    	new EnviarSinal(ctx)
+		    	   .execute(getUrl("/sinal/" + geraParametros(imei, user, lat, lng)
+		    			                      .replaceAll("\\/", "_")
+		    			                      .replaceAll("\\+", "-")
+		    			                      ));
+            }
+         });
     }
 
     public String getIMEI(){
