@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import br.metodista.tcc.util.Util;
 
 public class AlarmManagerSinal extends BroadcastReceiver {
 	private static final long REPEAT_TIME = 1000 * 60 * 5;
@@ -14,9 +15,8 @@ public class AlarmManagerSinal extends BroadcastReceiver {
 	public void onReceive(Context context, Intent it) {
 		Log.i("Servico", "Recebeu broadcast");
 
-		// Inicia barra de notificações 
-		Intent notif = new Intent(context, ServicoNotificacao.class);
-	    context.startService(notif);
+		// Inicia barra de notificações
+		Util.showNotification(context, Util.ICON_OK, "Envio de sinal ativo");
 
 		// Inicia envio de sinais
 		Intent serviceIntent = new Intent(context, ServicoSinal.class);
@@ -25,5 +25,4 @@ public class AlarmManagerSinal extends BroadcastReceiver {
 	    alarm.cancel(pi);
 	    alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), REPEAT_TIME, pi);
 	}
-
 }

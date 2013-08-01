@@ -37,7 +37,6 @@
 
     <application android:icon="@drawable/icon" android:label="@string/app_name"
         android:hardwareAccelerated="true"
-        android:debuggable="true"
         android:allowBackup="true">
         <activity android:name="ActivityGeoequipe" android:label="@string/app_name"
                 android:theme="@android:style/Theme.Black.NoTitleBar"
@@ -57,6 +56,5 @@
         </receiver>
 
         <service android:name=".ServicoSinal" android:enabled="true" />
-		<service android:name=".ServicoNotificacao" android:enabled="true" />
     </application>
 </manifest>

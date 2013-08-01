@@ -8,7 +8,7 @@ import java.net.URL;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
+import br.metodista.tcc.util.Util;
 
 public class EnviarSinal extends AsyncTask<String, Void, String>{
 	Exception e;
@@ -23,9 +23,7 @@ public class EnviarSinal extends AsyncTask<String, Void, String>{
 		String responseCode = "";
 		try {
 			URL url = new URL(_url[0]);
-
 			Log.i("Servico", "entrou acessa URL: url => " + url.toString());
-			//Toast.makeText(this.ctx, "entrou acessa URL: url => " + url.toString(), Toast.LENGTH_LONG).show();
 
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setConnectTimeout(60000);
@@ -49,6 +47,9 @@ public class EnviarSinal extends AsyncTask<String, Void, String>{
 
 	@Override
     protected void onPostExecute(String response) {
-		Toast.makeText(this.ctx, "Resposta da URL: " + response, Toast.LENGTH_LONG).show();
+		if (response.equals("200"))
+			Util.showNotification(this.ctx, Util.ICON_OK, "Sinal enviado em " + Util.now());
+		else
+			Util.showNotification(this.ctx, Util.ICON_FAIL, "Erro ao enviar último sinal");
 	}
 }

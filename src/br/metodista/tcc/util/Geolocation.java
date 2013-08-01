@@ -11,7 +11,6 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 public class Geolocation {
     private LocationManager    lm;
@@ -33,13 +32,11 @@ public class Geolocation {
 
     public boolean getLocation(Callback<Location> c) {
     	Log.i("Servico", "iniciou Geolocation");
-    	Toast.makeText(context, "iniciou Geolocation", Toast.LENGTH_SHORT).show();
     	this.callback = c;
         this.timer = new Timer();
         this.timer.schedule(new TimerTask(){
         	public void run(){
         		Log.i("Servico", "Timeout: Cancelando listeners e chamando callback");
-        		//Toast.makeText(context, "Timeout: Cancelando listeners e chamando callback", Toast.LENGTH_SHORT).show();
         		lm.removeUpdates(ll);
         		timer.cancel();
         		callback.run(escolheMelhorSinal(true));
@@ -72,7 +69,7 @@ public class Geolocation {
     LocationListener ll = new LocationListener() {
         public void onLocationChanged(Location location) {
         	Log.i("Servico", "Recebeu Sinal: " + location);
-        	Toast.makeText(context, "Recebeu Sinal: " + location + " \n Total de sinais: " + (sinais.size() + 1), Toast.LENGTH_LONG).show();
+        	//Toast.makeText(context, "Recebeu Sinal: " + location + " \n Total de sinais: " + (sinais.size() + 1), Toast.LENGTH_LONG).show();
         	if (sinais.size() < 7) {
         		if (location.getAccuracy() < 50) {
         			Log.i("Servico", "adicionou sinal no array");
