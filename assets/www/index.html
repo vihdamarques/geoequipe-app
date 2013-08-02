@@ -13,6 +13,9 @@
   <script src="js/jquery-1.9.1.min.js"></script>
   <script src="js/jquery.mobile-1.3.1.min.js"></script>
   
+  <!-- Cordova -->
+  <script src="js/cordova-2.5.0.js"></script>
+
   <!-- Extra Codiqa features -->
   <script src="js/codiqa.ext.js"></script>
   
@@ -20,8 +23,13 @@
   <script src="js/geoequipe.js"></script>
   
   <script type="text/javascript">
-    var login = localStorage.getItem('usuario');
-	if (login) { window.location = "lista_tarefas.html"; };
+    //var login = localStorage.getItem('usuario');
+	   AppConfig.getUserId(function(retorno){
+       alert("a"+retorno+"b");
+       if (retorno != null) {
+         $.mobile.changePage("lista_tarefas.html");
+       }
+     }, function(){});
   </script>
 
    
@@ -39,15 +47,15 @@
             <label for="textinput1">
                 Usuário
             </label>
-            <input name="usuario" id="textinput1" placeholder="" value="" type="text" data-mini="true">
+            <input name="usuario" id="usuario" placeholder="" value="" type="text" data-mini="true">
         </div>
         <div data-role="fieldcontain">
             <label for="textinput2">
                 Senha
             </label>
-            <input name="senha" id="textinput2" placeholder="" value="" type="password" data-mini="true">
+            <input name="senha" id="senha" placeholder="" value="" type="password" data-mini="true">
         </div>
-        <a id="btn_entrar" data-role="button" data-inline="true" data-theme="b" href="#" data-icon="arrow-r" data-iconpos="right" onclick="set_sessao();fnc_login();">
+        <a id="btn_entrar" data-role="button" data-inline="true" data-theme="b" href="#" data-icon="arrow-r" data-iconpos="right" onclick="fnc_login();">
             Entrar
         </a>
     </div>
