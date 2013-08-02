@@ -48,11 +48,13 @@ public class Geolocation {
 
         try {
         	this.gps_enabled = this.lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
-    	} catch (Exception ex) {}
+        	Log.i("Servico", "GPS: " + this.gps_enabled);
+    	} catch (Exception ex) {Log.i("Servico", "Erro GPS");}
 
         try {
         	this.network_enabled = this.lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-    	} catch (Exception ex) {}
+        	Log.i("Servico", "NETWORK: " + this.network_enabled);
+    	} catch (Exception ex) {Log.i("Servico", "Erro NETWORK");}
 
         if (!this.gps_enabled && !this.network_enabled)
             return false;
