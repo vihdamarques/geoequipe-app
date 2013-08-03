@@ -1,28 +1,18 @@
-var AppConfig = { 
-    getUserId: function (success, fail) { 
-      return cordova.exec( success, fail, 
-                           "br.metodista.tcc.plugin.AppConfig", 
-                           "getUserId", []); 
+var AppConfig = {
+    getUserId: function (success, fail) {
+      return cordova.exec(success, fail, "AppConfig", "getUserId", []);
     }
-   ,setUserId: function (userId) { 
-      return cordova.exec( function(){}, function(){}, 
-                           "br.metodista.tcc.plugin.AppConfig", 
-                           "setUserId", [userId]); 
+   ,setUserId: function (userId) {
+      return cordova.exec(null, null, "AppConfig", "setUserId", [userId]);
     }
    ,getEnviaSinal: function (success, fail) { 
-      return cordova.exec( success, fail, 
-                           "br.metodista.tcc.plugin.AppConfig", 
-                           "getEnviaSinal", []); 
+      return cordova.exec(success, fail, "AppConfig", "getEnviaSinal", []);
     }
    ,setEnviaSinalOn: function (success, fail) { 
-      return cordova.exec( success, fail, 
-                           "br.metodista.tcc.plugin.AppConfig", 
-                           "setEnviaSinalOn", []); 
+      return cordova.exec(success, fail, "AppConfig", "setEnviaSinalOn", []);
     }
    ,setEnviaSinalOff: function (success, fail) { 
-      return cordova.exec( success, fail, 
-                           "br.metodista.tcc.plugin.AppConfig", 
-                           "setEnviaSinalOff", []); 
+      return cordova.exec(success, fail, "AppConfig", "setEnviaSinalOff", []);
     }
 };
 
@@ -52,4 +42,9 @@ function fnc_login() {
                      "Resposta: " + xhr.responseText + "\n" + thrownError);
           }
       });
+}
+
+function logout() {
+  AppConfig.setUserId("");
+  $.mobile.changePage("index.html");
 }

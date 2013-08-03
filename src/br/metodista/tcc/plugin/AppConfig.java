@@ -1,64 +1,31 @@
 package br.metodista.tcc.plugin;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
 import org.apache.cordova.api.CallbackContext;
 import org.apache.cordova.api.CordovaPlugin;
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import android.content.Context;
+import android.util.Log;
+import br.metodista.tcc.util.Util;
 
 public class AppConfig extends CordovaPlugin  {
 
-	private String FILENAME_USUARIO = "usuario";
-	//private String FILENAME_SINAL   = "sinal";
-	private Context ctx = this.cordova.getActivity().getApplicationContext();
+	private Context ctx;
 
 	@Override
-    public boolean execute(String action, String param, CallbackContext callbackContext) {
-        if (action.equals("getUserId")) {
-            this.getUserId(callbackContext);
+    public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
+		this.ctx = this.cordova.getActivity().getBaseContext();
+
+		if (action.equals("getUserId")) {
+            String userId = Util.getUserId(ctx);
+            Log.i("Servico", "getUserId: " + userId);
+            callbackContext.success(userId);
             return true;
         } else if (action.equals("setUserId")) {
-        	this.setUserId(param, callbackContext);
-            return true;
+            return Util.setUserId(ctx, args.getString(0));
         }
         return false;
     }
 
-	private void getUserId(CallbackContext callbackContext) {
-        String userId = "";
-
-        try {
-			FileInputStream arquivo = ctx.openFileInput(FILENAME_USUARIO);
-			int content;
-			while ((content = arquivo.read()) != -1) {
-				userId = userId + (char) content;
-			}
-			arquivo.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-        callbackContext.success(userId);
-    }
-
-	private void setUserId(String userId, CallbackContext callbackContext) {
-		if (userId!= null && userId.length() > 0) {
-			FileOutputStream fos;
-			try {
-				fos = ctx.openFileOutput(FILENAME_USUARIO, Context.MODE_PRIVATE);
-				fos.write(userId.getBytes());
-				fos.close();
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
 }
