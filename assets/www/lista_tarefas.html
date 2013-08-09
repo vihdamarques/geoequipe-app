@@ -23,11 +23,12 @@
   
   <!-- Arquivos Geoequipe -->
   <script src="js/geoequipe.js"></script>
+  <script src="js/tarefa.js" charset="iso-8859-1"></script>
    
 </head>
 <body>
 <!-- Home -->
-<div data-role="page" id="page1">
+<div data-role="page" id="home">
     <div data-theme="a" data-role="header">
         <h3>
             Tarefas
@@ -36,104 +37,17 @@
     </div>
     <div data-role="content">
         <div data-role="collapsible-set" data-theme="d" data-content-theme="d">
-            <div data-role="collapsible" data-collapsed="false">
-                <h3>
-                    Tarefa 1
-                </h3>
-				<font size="2px">O ministro da Justiça, José Eduardo Cardozo, convocou jornalistas no final da tarde desta quinta-feira 
-				(4) para esclarecer e desmentir as declarações do vice-presidente da República, Michel Temer (PMDB), que 
-				mais cedo havia admitido que o plebiscito de reforma política proposto por Dilma Rousseff (PT) não sairá a 
-				tempo de valer para as eleições do ano que vem. "O governo não mudou de posição em nenhum momento", afirmou 
-				o ministro. Ele disse ainda que "o governo não não pode bater o martelo sobre o plebiscito porque o martelo 
-				é do Congresso".</font>
-				<br>
-				<textarea name="" id="textarea1" placeholder="Apontamento" cols="200"></textarea>
-				<div class="ui-grid-a">
-                    <div class="ui-block-a">
-						<input type="submit" data-inline="true" data-theme="b" data-icon="check" data-iconpos="left" value="Concluir" data-mini="true">
-					</div>
-					<div class="ui-block-b">
-						<a href="geo:-23.530776,-47.135,600000">
-							<div style=" text-align:right">
-								<img style="width: 40px; height: 40px" src="img\google-maps-icone.png">
-							</div>
-						</a>
-					</div>
-				</div>
-            </div>
-            <div data-role="collapsible">
-                <h3>
-                    Tarefa 2
-                </h3>
-				<font size="2px">Pela manhã, Temer declarou que o governo havia descartado a chance de fazer um plebiscito a tempo de que as regras 
-				fossem aplicadas para as próximas eleições. Na ocasião, o vice-presidente disse que  "não há mais condições de fazer 
-				qualquer consulta antes de outubro.</font>
-				<br>
-				<textarea name="" id="textarea1" placeholder="Apontamento" cols="200"></textarea>
-				<div class="ui-grid-a">
-                    <div class="ui-block-a">
-						<input type="submit" data-inline="true" data-theme="b" data-icon="check" data-iconpos="left" value="Concluir" data-mini="true">
-					</div>
-					<div class="ui-block-b">
-						<a href="geo:38.897096,-77.036545?z=16">
-							<div style=" text-align:right">
-								<img style="width: 40px; height: 40px" src="img\google-maps-icone.png">
-							</div>
-						</a>
-					</div>
-				</div>
-            </div>
-            <div data-role="collapsible" data-collapsed="false">
-                <h3>
-                    Tarefa 3
-                </h3>
-				<font size="2px">Pela manhã, Temer declarou que o governo havia descartado a chance de fazer um plebiscito a tempo de que as regras 
-				fossem aplicadas para as próximas eleições. Na ocasião, o vice-presidente disse que  "não há mais condições de fazer 
-				qualquer consulta antes de outubro.</font>
-				<br>
-				<textarea name="" id="textarea1" placeholder="Apontamento" cols="200"></textarea>
-				<div class="ui-grid-a">
-                    <div class="ui-block-a">
-						<input type="submit" data-inline="true" data-theme="b" data-icon="check" data-iconpos="left" value="Concluir" data-mini="true">
-					</div>
-					<div class="ui-block-b">
-						<a href="geo:38.897096,-77.036545">
-							<div style=" text-align:right">
-								<img style="width: 40px; height: 40px" src="img\google-maps-icone.png">
-							</div>
-						</a>
-					</div>
-				</div>
-            </div>
-            <div data-role="collapsible" data-collapsed="false">
-                <h3>
-                    Tarefa 4 <img style="width: 16px; height: 16px" src="img\ok.png">
-                </h3>
-				<font size="2px">Pela manhã, Temer declarou que o governo havia descartado a chance de fazer um plebiscito a tempo de que as regras 
-				fossem aplicadas para as próximas eleições. Na ocasião, o vice-presidente disse que  "não há mais condições de fazer 
-				qualquer consulta antes de outubro.</font>
-				<br>
-				<textarea name="" id="textarea1" placeholder="Apontamento" cols="200"></textarea>
-				<div class="ui-grid-a">
-                    <div class="ui-block-a">
-						<input type="submit" data-inline="true" data-theme="b" data-icon="check" data-iconpos="left" value="Concluir" data-mini="true">
-					</div>
-					<div class="ui-block-b">
-						<a href="geo:38.897096,-77.036545">
-							<div style=" text-align:right">
-								<img style="width: 40px; height: 40px" src="img\google-maps-icone.png">
-							</div>
-						</a>
-					</div>
-				</div>
-            </div>
+            <script>document.write(fnc_tarefa());</script>
         </div>
     </div>
 
-<a id="btn_teste" data-role="button" data-inline="true" data-theme="b" href="#" data-icon="arrow-r" data-iconpos="right" onclick="get_sessao();">Usuario</a>
+<!-- <a id="btn_teste" data-role="button" data-inline="true" data-theme="b" href="#" data-icon="arrow-r" data-iconpos="right" onclick="fnc_tarefa();">Tarefa</a> -->
+
 </div>
+
+
 <script type="text/javascript">
-            app.initialize();
-        </script>
+	app.initialize();
+</script>
 </body>
 </html>
