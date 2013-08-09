@@ -4,9 +4,9 @@ import org.apache.cordova.api.CallbackContext;
 import org.apache.cordova.api.CordovaPlugin;
 import org.json.JSONArray;
 import org.json.JSONException;
-
 import android.content.Context;
 import android.util.Log;
+import br.metodista.tcc.util.Storage;
 import br.metodista.tcc.util.Util;
 
 public class AppConfig extends CordovaPlugin  {
@@ -16,14 +16,24 @@ public class AppConfig extends CordovaPlugin  {
 	@Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
 		this.ctx = this.cordova.getActivity().getBaseContext();
-
+		boolean enviaSinal;
 		if (action.equals("getUserId")) {
-            String userId = Util.getUserId(ctx);
-            Log.i("Servico", "getUserId: " + userId);
-            callbackContext.success(userId);
+            callbackContext.success(Storage.getUserId(ctx));
             return true;
         } else if (action.equals("setUserId")) {
-            return Util.setUserId(ctx, args.getString(0));
+            return Storage.setUserId(ctx, args.getString(0));
+        } else if (action.equals("setEnviaSinalOn")) {
+        	enviaSinal = Storage.setEnviaSinalOn(ctx);
+        	Util.iniciaNotificacao(ctx);
+        	return enviaSinal;
+        } else if (action.equals("setEnviaSinalOff")) {
+        	enviaSinal = Storage.setEnviaSinalOff(ctx);
+        	Util.iniciaNotificacao(ctx);
+        	return enviaSinal;
+        } else if (action.equals("getEnviaSinal")) {
+        	Log.i("Servico", "getEnviaSinal: " + Storage.getEnviaSinal(ctx));
+        	callbackContext.success(Storage.getEnviaSinal(ctx));
+            return true;
         }
         return false;
     }

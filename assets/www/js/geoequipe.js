@@ -5,18 +5,18 @@ var AppConfig = {
    ,setUserId: function (userId) {
       return cordova.exec(null, null, "AppConfig", "setUserId", [userId]);
     }
-   ,getEnviaSinal: function (success, fail) { 
+   ,getEnviaSinal: function (success, fail) {
       return cordova.exec(success, fail, "AppConfig", "getEnviaSinal", []);
     }
-   ,setEnviaSinalOn: function (success, fail) { 
+   ,setEnviaSinalOn: function (success, fail) {
       return cordova.exec(success, fail, "AppConfig", "setEnviaSinalOn", []);
     }
-   ,setEnviaSinalOff: function (success, fail) { 
+   ,setEnviaSinalOff: function (success, fail) {
       return cordova.exec(success, fail, "AppConfig", "setEnviaSinalOff", []);
     }
 };
 
-function fnc_login() {
+function login() {
   $.ajax({type: 'GET'
          ,url: 'http://geoequipe.aws.af.cm/login/' + $("#usuario").val() + '/' + $("#senha").val()
          ,dataType: 'json'
@@ -48,3 +48,20 @@ function logout() {
   AppConfig.setUserId("");
   $.mobile.changePage("index.html");
 }
+
+function trocaEnvioSinal() {
+  
+}
+
+$(document).on("pageshow", "#configuracoes", function() {
+  $("#enviaSinal").on("change", function() {
+    if ($(this).val() == "on")
+      AppConfig.setEnviaSinalOn(null, null);
+    else
+      AppConfig.setEnviaSinalOff(null, null);
+  });
+  AppConfig.getEnviaSinal(function(retorno) {
+    $('#enviaSinal').val(retorno);
+    $('#enviaSinal').slider('refresh');
+  }, function(){});
+});

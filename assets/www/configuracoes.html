@@ -6,28 +6,24 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <title></title>
-  
-  
-  
+
   <link rel="stylesheet" href="css/jquery.mobile-1.3.1.min.css">
-  
   <!-- Extra Codiqa features -->
   <link rel="stylesheet" href="css/codiqa.ext.css">
-  
+
   <!-- jQuery and jQuery Mobile -->
   <script src="js/jquery-1.9.1.min.js"></script>
   <script src="js/jquery.mobile-1.3.1.min.js"></script>
-
+  <!-- Cordova -->
+  <script src="js/cordova-2.5.0.js"></script>
   <!-- Extra Codiqa features -->
   <script src="js/codiqa.ext.js"></script>
-  
   <!-- Arquivos Geoequipe -->
   <script src="js/geoequipe.js"></script>
-   
 </head>
 <body>
 <!-- Home -->
-<div data-role="page" id="page1">
+<div data-role="page" id="configuracoes">
     <div data-theme="a" data-role="header">
         <h3>
             Configurações
@@ -38,14 +34,14 @@
             Fazer Logoff
         </a>
         <div data-role="fieldcontain">
-            <label for="toggleswitch1">
+            <label for="enviaSinal">
                 Envio de Sinal
             </label>
-            <select name="toggleswitch1" id="toggleswitch1" data-theme="" data-role="slider">
+            <select name="enviaSinal" id="enviaSinal" data-theme="" data-role="slider">
                 <option value="off">
                     Off
                 </option>
-                <option value="on">
+                <option value="on" selected>
                     On
                 </option>
             </select>
@@ -53,8 +49,23 @@
 		
     </div>
 </div>
+
 <script type="text/javascript">
-            app.initialize();
-        </script>
+  alert("entrou script");
+  console.log("entrou script");
+  $("#enviaSinal").on("change", function(){
+    console.log("entrou change");
+    if ($(this).val() == "on")
+      setEnviaSinalOn(null, null);
+    else
+      setEnviaSinalOff(null, null);
+  });
+  AppConfig.getEnviaSinal(function(retorno) {
+    console.log("retornou getEnviaSinal:"+retorno);
+    $('#enviaSinal').val(retorno);
+    $('#enviaSinal').slider('refresh');
+  }, function(){});
+</script>
+
 </body>
 </html>

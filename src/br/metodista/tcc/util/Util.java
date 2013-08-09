@@ -1,9 +1,5 @@
 package br.metodista.tcc.util;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import android.annotation.SuppressLint;
@@ -17,11 +13,10 @@ import br.metodista.tcc.geoequipe.R;
 
 public class Util {
 
-	private static int NOTIFICATION        = 30313;
-	public static int ICON_OK              = R.drawable.icon;
-	public static int ICON_FAIL            = R.drawable.icon_fail;
-	private static String FILENAME_USUARIO = "usuario";
-	//private static String FILENAME_SINAL   = "sinal";
+	private static int NOTIFICATION = 716979;
+
+	public static int ICON_OK       = R.drawable.icon;
+	public static int ICON_FAIL     = R.drawable.icon_fail;
 
 	@SuppressWarnings("deprecation")
 	public static void showNotification(Context ctx, int icon, String text) {
@@ -37,45 +32,18 @@ public class Util {
 		NotificationManager nm = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
 		nm.cancel(NOTIFICATION);
 	}
+	
+	public static void iniciaNotificacao(Context context){
+		if (Storage.getEnviaSinal(context).equals("on")){
+			Util.showNotification(context, Util.ICON_OK, "Envio de sinal ativo");
+		} else {
+			Util.showNotification(context, Util.ICON_FAIL, "Envio de sinal inativo");
+		}
+	}
 
 	@SuppressLint("SimpleDateFormat")
 	public static String now(){
 		return new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date());
-	}
-
-	public static String getUserId(Context ctx) {
-		String userId = "";
-
-		try {
-			FileInputStream arquivo = ctx.openFileInput(FILENAME_USUARIO);
-			int content;
-			while ((content = arquivo.read()) != -1) {
-				userId = userId + (char) content;
-			}
-			arquivo.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		return userId;
-	}
-
-	public static boolean setUserId(Context ctx, String userId) {
-			FileOutputStream fos;
-			try {
-				fos = ctx.openFileOutput(FILENAME_USUARIO, Context.MODE_PRIVATE);
-				if (userId!= null && userId.length() > 0)
-					fos.write(userId.getBytes());
-				else
-					fos.write((new String()).getBytes());
-				fos.close();
-				return true;
-			} catch (Exception e) {
-				e.printStackTrace();
-				return false;
-			}
 	}
 
 }

@@ -16,7 +16,7 @@ public class AlarmManagerSinal extends BroadcastReceiver {
 		Log.i("Servico", "Recebeu broadcast");
 
 		// Inicia barra de notificações
-		Util.showNotification(context, Util.ICON_OK, "Envio de sinal ativo");
+		Util.iniciaNotificacao(context);
 
 		// Inicia envio de sinais
 		Intent serviceIntent = new Intent(context, ServicoSinal.class);
