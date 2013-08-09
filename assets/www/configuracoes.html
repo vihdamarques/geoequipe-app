@@ -49,23 +49,5 @@
 		
     </div>
 </div>
-
-<script type="text/javascript">
-  alert("entrou script");
-  console.log("entrou script");
-  $("#enviaSinal").on("change", function(){
-    console.log("entrou change");
-    if ($(this).val() == "on")
-      setEnviaSinalOn(null, null);
-    else
-      setEnviaSinalOff(null, null);
-  });
-  AppConfig.getEnviaSinal(function(retorno) {
-    console.log("retornou getEnviaSinal:"+retorno);
-    $('#enviaSinal').val(retorno);
-    $('#enviaSinal').slider('refresh');
-  }, function(){});
-</script>
-
 </body>
 </html>
