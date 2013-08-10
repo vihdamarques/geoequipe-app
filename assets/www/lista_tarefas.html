@@ -13,41 +13,34 @@
   
   <!-- Extra Codiqa features -->
   <link rel="stylesheet" href="css/codiqa.ext.css">
-  
+
+  <!-- Cordova -->
+  <script src="js/cordova-2.5.0.js"></script>
+
   <!-- jQuery and jQuery Mobile -->
   <script src="js/jquery-1.9.1.min.js"></script>
   <script src="js/jquery.mobile-1.3.1.min.js"></script>
 
   <!-- Extra Codiqa features -->
   <script src="js/codiqa.ext.js"></script>
-  
+
   <!-- Arquivos Geoequipe -->
   <script src="js/geoequipe.js"></script>
-  <script src="js/tarefa.js" charset="iso-8859-1"></script>
-   
+
 </head>
 <body>
 <!-- Home -->
-<div data-role="page" id="home">
+<div data-role="page" id="lista_tarefas">
     <div data-theme="a" data-role="header">
         <h3>
             Tarefas
         </h3>
-		<a href="configuracoes.html" data-role="button" data-icon="gear" data-iconpos="notext" data-theme="a" data-inline="true" class="ui-btn-right">Gear</a>
+	   <a href="configuracoes.html" data-role="button" data-icon="gear" data-iconpos="notext" data-theme="a" data-inline="true" class="ui-btn-right">Gear</a>
     </div>
     <div data-role="content">
-        <div data-role="collapsible-set" data-theme="d" data-content-theme="d">
-            <script>document.write(fnc_tarefa());</script>
+        <div data-role="collapsible-set" data-theme="d" data-content-theme="d" id="tarefas">
         </div>
     </div>
-
-<!-- <a id="btn_teste" data-role="button" data-inline="true" data-theme="b" href="#" data-icon="arrow-r" data-iconpos="right" onclick="fnc_tarefa();">Tarefa</a> -->
-
 </div>
-
-
-<script type="text/javascript">
-	app.initialize();
-</script>
 </body>
 </html>
