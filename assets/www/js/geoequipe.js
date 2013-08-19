@@ -71,80 +71,64 @@ $(document).on("pageshow", "#lista_tarefas", function() {
 });
 
 function fnc_tarefa() {
-  var v_tarefas =   { "tarefas":[{
-              "id_tarefa":"1",
-              "descricao":"Esta tudo dando errado, Dona francisca nao sabe mais o que fazer.",
-              "local":"Loja da Francisca",
-              "apontamento":"O equipamento estava fora da tomada. Mulher burra pra caramba.",
-              "coord":
-              {
-                "lat":-23.123,
-                "lng":-46.123
-              }
-            },
-            {
-              "id_tarefa":"2",
-              "descricao":"A independencia da comissão criada nesta sexta-feira (9) para investigar o suposto cartel envolvendo o metro e os trens metropolitanos de Sao Paulo foi questionada por integrantes do grupo ja anunciado.",
-              "local":"Pizzaria",
-              "apontamento":"",
-              "coord":
-              {
-                "lat":-23.456,
-                "lng":-46.456
-              }
-            },
-            {
-              "id_tarefa":"2",
-              "descricao":"Antes do anuncio, Claudio Abramo, diretor-executivo da Transparencia Brasil, um dos orgaos da comissão, comemorou a independencia da comissão aparentemente sem saber que ela seria encabecada pela Corregedoria. O governo do Estado toma uma medida que nao envolve participantes do governo. Essa comissão não tem representantes do governo.",
-              "local":"Borracharia Barbosa",
-              "apontamento":"",
-              "coord":
-              {
-                "lat":-23.456,
-                "lng":-46.456
-              }
-            },
-            {
-              "id_tarefa":"3",
-              "descricao":"No entanto, depois de Ungaro ser anunciado, Abramo confrontou o proprio governador sobre a independencia do grupo. Ironico, o diretor-executivo da Transparencia Brasil perguntou se nao seriam so grupos da sociedade civil que participariam da comissa",
-              "local":"Pizzaria Boi na Brasa",
-              "apontamento":"",
-              "coord":
-              {
-                "lat":-23.798,
-                "lng":-46.789
-              }
-            }
-            ],
-            "erro":"Erro ao carregar tarefas."
-          };
-        
-  listatarefas = '';
+listatarefas = '';
+
+$.ajax({type: 'GET'
+         ,url: 'http://geoequipe.aws.af.cm/tarefa/consulta/' + AppConfig.getUserId()
+         ,dataType: 'json'
+		 ,async: false
+         ,success: function(data) {
+                     if (data) {
+                       if (data.erro && data.erro.length > 0) {
+                         alert(data.erro);
+                       } else {
+                         if (data.tarefas.length > 0) { 
+						 
+							
+							//popula variavel com as tarefas
+							  for (i=0; i<data.tarefas.length; i++) {
+							  
+								listatarefas += '<div data-role="collapsible" data-collapsed="false">' +
+											'<h3>' +
+												data.tarefas[i].local +
+											'</h3>' +
+									'<font size="2px">' + data.tarefas[i].descricao + '</font>' +
+									'<input type="hidden" name="id_tarefa" id="id_tarefa" value="' + data.tarefas[i].id_tarefa + '"' +
+									'<br>' +
+									'<textarea name="" id="apontamento" placeholder="Apontamento" cols="200">' + data.tarefas[i].apontamento + '</textarea>' +
+									'<div class="ui-grid-a">' +
+												'<div class="ui-block-a">';
+												if (data.tarefas[i].apontamento.lenght = 0) {
+													listatarefas += '<input type="submit" data-inline="true" data-theme="b" data-icon="check" data-iconpos="left" value="Concluir" data-mini="true">';
+												}										
+									  listatarefas += '</div>' +
+									  '<div class="ui-block-b">' +
+										'<a href="geo:' + data.tarefas[i].coord.lat + ',' + data.tarefas[i].coord.lng + '">' +
+										  '<div style=" text-align:right">' +
+											'<img style="width: 40px; height: 40px" src="img/google-maps-icone.png">' +
+										  '</div>' +
+										'</a>' +
+									  '</div>' +
+									'</div>' +
+										'</div>';
+							  }		  
+							
+						 
+                         } else {
+							alert('não tem tarefa');
+						 }
+                       }
+                     } else {
+                       alert("Não há dados!");
+                     }
+          }
+         ,error: function (xhr, ajaxOptions, thrownError) {
+              alert("Erro ao fazer consulta de tarefa: " + xhr.status + "\n" +
+                     "Mensagem: " + xhr.statusText + "\n" +
+                     "Resposta: " + xhr.responseText + "\n" + thrownError);
+          }
+      });
+	  
+	return listatarefas;
   
-  for (i=0; i<v_tarefas.tarefas.length; i++) {
-  
-    listatarefas += '<div data-role="collapsible" data-collapsed="false">' +
-                '<h3>' +
-                    v_tarefas.tarefas[i].local +
-                '</h3>' +
-        '<font size="2px">' + v_tarefas.tarefas[i].descricao + '</font>' +
-        '<input type="hidden" name="id_tarefa" id="id_tarefa" value="' + v_tarefas.tarefas[i].id_tarefa + '"' +
-        '<br>' +
-        '<textarea name="" id="apontamento" placeholder="Apontamento" cols="200">' + v_tarefas.tarefas[i].apontamento + '</textarea>' +
-        '<div class="ui-grid-a">' +
-                    '<div class="ui-block-a">' +
-            '<input type="submit" data-inline="true" data-theme="b" data-icon="check" data-iconpos="left" value="Concluir" data-mini="true">' +
-          '</div>' +
-          '<div class="ui-block-b">' +
-            '<a href="geo:' + v_tarefas.tarefas[i].coord.lat + ',' + v_tarefas.tarefas[i].coord.lng + '">' +
-              '<div style=" text-align:right">' +
-                '<img style="width: 40px; height: 40px" src="img/google-maps-icone.png">' +
-              '</div>' +
-            '</a>' +
-          '</div>' +
-        '</div>' +
-            '</div>';
-    
-  }
-  return listatarefas;
 }
