@@ -88,34 +88,34 @@ $.ajax({type: 'GET'
 							//popula variavel com as tarefas
 							  for (i=0; i<data.tarefas.length; i++) {
 							  
-								listatarefas += '<div data-role="collapsible" data-collapsed="false">' +
-											'<h3>' +
-												data.tarefas[i].local +
-											'</h3>' +
+								listatarefas += 
+								'<div data-role="collapsible" data-collapsed="false">' +
+									'<h3>' +
+										data.tarefas[i].local +
+									'</h3>' +
 									'<font size="2px">' + data.tarefas[i].descricao + '</font>' +
 									'<input type="hidden" name="id_tarefa" id="id_tarefa" value="' + data.tarefas[i].id_tarefa + '"' +
 									'<br>' +
-									'<textarea name="" id="apontamento" placeholder="Apontamento" cols="200">' + data.tarefas[i].apontamento + '</textarea>' +
+									'<textarea name="" id="apontamento" placeholder="Apontamento" cols="200">' + data.tarefas[i].apontamento+ '</textarea>' +
 									'<div class="ui-grid-a">' +
-												'<div class="ui-block-a">';
-												if (data.tarefas[i].apontamento.lenght = 0) {
-													listatarefas += '<input type="submit" data-inline="true" data-theme="b" data-icon="check" data-iconpos="left" value="Concluir" data-mini="true">';
-												}										
-									  listatarefas += '</div>' +
-									  '<div class="ui-block-b">' +
-										'<a href="geo:' + data.tarefas[i].coord.lat + ',' + data.tarefas[i].coord.lng + '">' +
-										  '<div style=" text-align:right">' +
-											'<img style="width: 40px; height: 40px" src="img/google-maps-icone.png">' +
-										  '</div>' +
-										'</a>' +
-									  '</div>' +
+										'<div class="ui-block-a">';
+											if (!data.tarefas[i].apontamento) {
+												listatarefas += '<input type="submit" data-inline="true" data-theme="b" data-icon="check" data-iconpos="left" value="Concluir" data-mini="true">';
+											}
+											listatarefas += 
+										'</div>' +
+										'<div class="ui-block-b">' +
+											'<a href="geo:' + data.tarefas[i].coord.lat + ',' + data.tarefas[i].coord.lng + '">' +
+												'<div style=" text-align:right">' +
+													'<img style="width: 40px; height: 40px" src="img/google-maps-icone.png">' +
+												'</div>' +
+											'</a>' +
+										'</div>' +
 									'</div>' +
-										'</div>';
-							  }		  
-							
-						 
+								'</div>';
+							  }	
                          } else {
-							alert('não tem tarefa');
+							alert('Não há tarefas hoje.');
 						 }
                        }
                      } else {
