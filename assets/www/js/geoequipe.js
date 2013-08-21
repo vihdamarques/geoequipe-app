@@ -90,17 +90,20 @@ $.ajax({type: 'GET'
 							  
 								listatarefas += 
 								'<div data-role="collapsible" data-collapsed="false">' +
-									'<h3>' +
-										data.tarefas[i].local +
+									'<h3>';
+										if (data.tarefas[i].apontamento){
+											listatarefas += '<img style="width: 16px; height: 16px" src="img/ok.png">';
+										}
+										listatarefas += data.tarefas[i].local +
 									'</h3>' +
 									'<font size="2px">' + data.tarefas[i].descricao + '</font>' +
 									'<input type="hidden" name="id_tarefa" id="id_tarefa" value="' + data.tarefas[i].id_tarefa + '"' +
 									'<br>' +
-									'<textarea name="" id="apontamento" placeholder="Apontamento" cols="200">' + data.tarefas[i].apontamento+ '</textarea>' +
+									'<textarea name="apontamento" id="apontamento" placeholder="Apontamento" cols="200">' + data.tarefas[i].apontamento + '</textarea>' +
 									'<div class="ui-grid-a">' +
 										'<div class="ui-block-a">';
 											if (!data.tarefas[i].apontamento) {
-												listatarefas += '<input type="submit" data-inline="true" data-theme="b" data-icon="check" data-iconpos="left" value="Concluir" data-mini="true">';
+												listatarefas += '<input type="submit" data-inline="true" data-theme="b" data-icon="check" data-iconpos="left" value="Concluir" data-mini="true" onclick="concluir();">';
 											}
 											listatarefas += 
 										'</div>' +
@@ -131,4 +134,13 @@ $.ajax({type: 'GET'
 	  
 	return listatarefas;
   
+}
+
+function concluir() {
+	var apontamento = $("#apontamento").val();
+	 if (!apontamento){
+		alert('Insira um apontamento.');
+	} else {
+		alert('Tarefa concluída.');
+	}
 }
