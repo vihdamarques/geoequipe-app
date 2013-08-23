@@ -4,11 +4,10 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
-import br.metodista.tcc.util.Util;
+import br.metodista.tcc.util.Notify;
 
 public class EnviarSinal extends AsyncTask<String, Void, String>{
 	Exception e;
@@ -35,7 +34,6 @@ public class EnviarSinal extends AsyncTask<String, Void, String>{
             this.e = e;
         } catch (IOException e) {
             System.out.println("Erro ao Acessar a URL => " + e.getMessage());
-            e.printStackTrace(System.out);
             this.e = e;
         }
 		return responseCode;
@@ -48,8 +46,8 @@ public class EnviarSinal extends AsyncTask<String, Void, String>{
 	@Override
     protected void onPostExecute(String response) {
 		if (response.equals("200"))
-			Util.showNotification(this.ctx, Util.ICON_OK, "Sinal enviado em " + Util.now());
+			Notify.sinalEnviado(this.ctx);
 		else
-			Util.showNotification(this.ctx, Util.ICON_FAIL, "Erro ao enviar último sinal");
+			Notify.erroSinal(this.ctx);
 	}
 }

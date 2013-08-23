@@ -29,16 +29,23 @@
 <body>
 <!-- Home -->
 <div data-role="page" id="lista_tarefas">
-    <div data-theme="a" data-role="header">
+  <div data-theme="a" data-role="header">
+    <h3>
+      Geoequipe - Tarefas
+    </h3>
+    <a href="configuracoes.html" data-role="button" data-icon="gear" data-iconpos="notext" data-theme="a" data-inline="true" class="ui-btn-right">
+      Gear
+    </a>
+  </div>
+  <div data-role="content">
+    <div data-role="collapsible-set" data-theme="d" data-content-theme="d" id="tarefas">
+      <div data-role="collapsible" data-collapsed="false">
         <h3>
-            Geoequipe - Tarefas
+          Carregando Tarefas...
         </h3>
-	   <a href="configuracoes.html" data-role="button" data-icon="gear" data-iconpos="notext" data-theme="a" data-inline="true" class="ui-btn-right">Gear</a>
+      </div>
     </div>
-    <div data-role="content">
-        <div data-role="collapsible-set" data-theme="d" data-content-theme="d" id="tarefas">
-        </div>
-    </div>
+  </div>
 </div>
 </body>
 </html>

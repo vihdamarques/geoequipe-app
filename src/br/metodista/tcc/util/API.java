@@ -1,12 +1,7 @@
 package br.metodista.tcc.util;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
@@ -14,18 +9,16 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import br.metodista.tcc.geoequipe.EnviarSinal;
 
-@SuppressLint("SimpleDateFormat")
 public class API {
-	private boolean rodar;
 	private Context ctx;
 	private String  host = "http://geoequipe.aws.af.cm"; // http://10.0.2.2
 	private int     port = 80; // 3014
 	private String  key  = "G3@#qU1p";
 	private Handler handler = new Handler(Looper.getMainLooper());
+	private static boolean rodando;
 
 	public API(Context _ctx){
-		this.ctx   = _ctx;
-		this.rodar = true;
+		this.ctx    = _ctx;
 	}
 
     public String geraParametros(String imei, String user, double lat, double lng) {
@@ -33,7 +26,7 @@ public class API {
         try {
 	        json.put("imei", String.valueOf(imei));
 	        json.put("user", String.valueOf(user));
-	        json.put("data", new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()));
+	        json.put("data", Util.now());
 
 	        JSONObject coord = new JSONObject();
 	        coord.put("lat",String.valueOf(lat));
@@ -87,11 +80,15 @@ public class API {
     	return Storage.getUserId(this.ctx);
     }
 
-	public boolean getRodar() {
-		return rodar;
+    public static void setRunning() {
+		API.rodando = true;
 	}
 
-	public void setRodar(boolean bool) {
-		rodar = bool;
+	public static void setNotRunning() {
+		API.rodando = false;
+	}
+
+	public static boolean isRunning() {
+		return API.rodando;
 	}
 }

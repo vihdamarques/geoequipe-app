@@ -34,7 +34,7 @@ function login() {
                          if (data.id_usuario && data.id_usuario.length > 0) {
                            // save in local storage
                            AppConfig.setUserId(data.id_usuario);
-                           Appconfig.updateNotification();
+                           AppConfig.updateNotification();
                            // perform page transition 
                            $.mobile.changePage("lista_tarefas.html");
                          }
@@ -71,20 +71,38 @@ $(document).on("pageshow", "#configuracoes", function() {
 });
 
 $(document).on("pageshow", "#lista_tarefas", function() {
-  $("#tarefas").html(fnc_tarefa()).trigger('create');
+  carregaTarefas();
 });
 
-function fnc_tarefa() {
+function init() {
+  AppConfig.getUserId(function(retorno) {
+    if (!retorno)
+      $.mobile.changePage("login.html");
+    else
+      $.mobile.changePage("lista_tarefas.html");
+   setTimeout(navigator.splashscreen.hide, 2000);
+  }, function(){});
+  document.addEventListener("backbutton", onBackKey, false);
+}
+
+function onBackKey() {
+  if ($("#configuracoes").size())
+    $.mobile.changePage("lista_tarefas.html");
+  else
+    navigator.app.exitApp();
+}
+
+function carregaTarefas() {
   var listatarefas = "";
 
   $.ajax({type: 'GET'
-         ,url: 'http://geoequipe.aws.af.cm/tarefa/consulta/' + AppConfig.getUserId()
+         ,url: 'http://geoequipe.aws.af.cm/tarefa/consulta/' + (AppConfig.getUserId() || '0')
          ,dataType: 'json'
-         ,async: false
+         ,async: true
          ,success: function(data) {
                      if (data) {
                        if (data.erro && data.erro.length > 0) {
-                         alert(data.erro);
+                         listatarefas = data.erro;
                        } else {
                          if (data.tarefas.length > 0) {
                            //popula variavel com as tarefas
@@ -106,7 +124,7 @@ function fnc_tarefa() {
                                    if (!data.tarefas[i].apontamento) {
                                      listatarefas += '<input type="submit" data-inline="true" data-theme="b" data-icon="check" data-iconpos="left" value="Concluir" data-mini="true" onclick="concluir();">';
                                    }
-                                   listatarefas += 
+                                 listatarefas += 
                                  '</div>' +
                                  '<div class="ui-block-b">' +
                                    '<a href="javascript:;" onclick="AppConfig.openMaps(\'' + data.tarefas[i].coord.lat + '\',\'' + data.tarefas[i].coord.lng + '\')">' +
@@ -119,12 +137,13 @@ function fnc_tarefa() {
                              '</div>';
                            }
                          } else {
-                           alert('Não há tarefas hoje.');
+                           listatarefas = '<div data-role="collapsible" data-collapsed="false"><h3>Não há tarefas hoje.</h3></div>';
                          }
                        }
                      } else {
-                       alert("Não há dados!");
+                       listatarefas = '<div data-role="collapsible" data-collapsed="false"><h3>Não há dados!</h3></div>';
                      }
+                     $("#tarefas").html(listatarefas).trigger('create');
           }
          ,error: function (xhr, ajaxOptions, thrownError) {
                    alert("Erro ao fazer consulta de tarefa: " + xhr.status + "\n" +
@@ -132,13 +151,11 @@ function fnc_tarefa() {
                          "Resposta: " + xhr.responseText + "\n" + thrownError);
           }
   });
-
-  return listatarefas;
 }
 
 function concluir() {
   var apontamento = $("#apontamento").val();
-   if (!apontamento){
+  if (!apontamento){
     alert('Insira um apontamento.');
   } else {
     alert('Tarefa concluída.');

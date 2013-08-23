@@ -6,7 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-import br.metodista.tcc.util.Util;
+import br.metodista.tcc.util.Notify;
 
 public class AlarmManagerSinal extends BroadcastReceiver {
 	private static final long REPEAT_TIME = 1000 * 60 * 5;
@@ -16,7 +16,7 @@ public class AlarmManagerSinal extends BroadcastReceiver {
 		Log.i("Servico", "Recebeu broadcast");
 
 		// Inicia barra de notificações
-		Util.iniciaNotificacao(context);
+		Notify.iniciaNotificacao(context);
 
 		// Inicia envio de sinais
 		Intent serviceIntent = new Intent(context, ServicoSinal.class);

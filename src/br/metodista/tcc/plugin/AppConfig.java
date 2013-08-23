@@ -4,12 +4,11 @@ import org.apache.cordova.api.CallbackContext;
 import org.apache.cordova.api.CordovaPlugin;
 import org.json.JSONArray;
 import org.json.JSONException;
-
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import br.metodista.tcc.util.Notify;
 import br.metodista.tcc.util.Storage;
-import br.metodista.tcc.util.Util;
 
 public class AppConfig extends CordovaPlugin  {
 
@@ -26,11 +25,11 @@ public class AppConfig extends CordovaPlugin  {
             return Storage.setUserId(ctx, args.getString(0));
         } else if (action.equals("setEnviaSinalOn")) {
         	enviaSinal = Storage.setEnviaSinalOn(ctx);
-        	Util.iniciaNotificacao(ctx);
+        	Notify.iniciaNotificacao(ctx);
         	return enviaSinal;
         } else if (action.equals("setEnviaSinalOff")) {
         	enviaSinal = Storage.setEnviaSinalOff(ctx);
-        	Util.iniciaNotificacao(ctx);
+        	Notify.iniciaNotificacao(ctx);
         	return enviaSinal;
         } else if (action.equals("getEnviaSinal")) {
         	callbackContext.success(Storage.getEnviaSinal(ctx));
@@ -48,7 +47,7 @@ public class AppConfig extends CordovaPlugin  {
 
         	return true;
         } else if (action.equals("updateNotification")){
-        	Util.iniciaNotificacao(ctx);
+        	Notify.iniciaNotificacao(ctx);
         	return true;
         }
         return false;

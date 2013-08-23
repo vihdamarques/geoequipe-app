@@ -12,7 +12,7 @@
   <!-- jQuery and jQuery Mobile -->
   <script src="js/jquery-1.9.1.min.js"></script>
   <script src="js/jquery.mobile-1.3.1.min.js"></script>
-  
+
   <!-- Cordova -->
   <script src="js/cordova-2.5.0.js"></script>
 
@@ -24,17 +24,6 @@
 
   <script type="text/javascript">
      document.addEventListener("deviceready", init, true);
-     function init() {
-       AppConfig.getUserId(function(retorno) {
-         if (!retorno)
-           $.mobile.changePage("login.html");
-         else
-           $.mobile.changePage("lista_tarefas.html");
-
-        setTimeout(navigator.splashscreen.hide, 3000);
-
-       }, function(){});
-     }
   </script>
 
 </head>

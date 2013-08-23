@@ -9,8 +9,8 @@ import android.util.Log;
 import br.metodista.tcc.util.API;
 import br.metodista.tcc.util.Callback;
 import br.metodista.tcc.util.Geolocation;
+import br.metodista.tcc.util.Notify;
 import br.metodista.tcc.util.Storage;
-import br.metodista.tcc.util.Util;
 
 public class ServicoSinal extends Service {
 
@@ -23,11 +23,12 @@ public class ServicoSinal extends Service {
 		if (podeMandarSinal(ctx)) {
 			Log.i("Servico", "Iniciou serviço Sinal");
 			Geolocation geo = new Geolocation(this);
-			Util.showNotification(ctx, Util.ICON_OK, "Obtendo localização...");
+			Notify.obtendoLocalizacao(ctx);
+			API.setRunning();
 	    	geo.getLocation(new Callback<Location>() {
 				public void run(Location coord) {
 					Log.i("Servico", "Resposta sinal. coord: " + coord);
-					if (podeMandarSinal(ctx)) {
+					if (podeMandarSinal(ctx))
 						if (coord != null) {
 							API api = new API(ctx);
 							api.enviarSinal (
@@ -36,10 +37,9 @@ public class ServicoSinal extends Service {
 							   ,coord.getLatitude()
 							   ,coord.getLongitude()
 							);
-						} else {
-							Util.showNotification(ctx, Util.ICON_FAIL, "Não foi possível obter localização");
-						}
-					}
+						} else
+							Notify.erroLocalizacao(ctx);
+					API.setNotRunning();
 					that.stopSelf();
 				}
 			});
