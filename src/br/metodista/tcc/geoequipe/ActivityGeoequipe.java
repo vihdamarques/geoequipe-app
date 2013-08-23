@@ -9,6 +9,7 @@ public class ActivityGeoequipe extends DroidGap {
     public void onCreate(Bundle savedInstanceState) {
     	sendBroadcast(new Intent("ALARM_MANAGER_SINAL"));
     	super.onCreate(savedInstanceState);
-        super.loadUrl(Config.getStartUrl());
+    	super.setIntegerProperty("splashscreen", R.drawable.splashscreen);
+        super.loadUrl(Config.getStartUrl(), 10000);
     }
 }

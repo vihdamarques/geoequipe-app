@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <title></title>
+
+  <link rel="stylesheet" href="css/jquery.mobile-1.3.1.min.css">
+
+  <!-- jQuery and jQuery Mobile -->
+  <script src="js/jquery-1.9.1.min.js"></script>
+  <script src="js/jquery.mobile-1.3.1.min.js"></script>
+  
+  <!-- Cordova -->
+  <script src="js/cordova-2.5.0.js"></script>
+
+  <!-- Extra Codiqa features -->
+  <script src="js/codiqa.ext.js"></script>
+
+  <!-- Arquivos Geoequipe -->
+  <script src="js/geoequipe.js"></script>
+
+</head>
+<body>
+  <!-- Home -->
+  <div data-role="page" id="login">
+      <div data-theme="a" data-role="header">
+          <h3>
+              Geoequipe - Login
+          </h3>
+      </div>
+      <div data-role="content" id="result">
+          <div data-role="fieldcontain">
+              <label for="textinput1">
+                  Usuário
+              </label>
+              <input name="usuario" id="usuario" placeholder="" value="" type="text" data-mini="true">
+          </div>
+          <div data-role="fieldcontain">
+              <label for="textinput2">
+                  Senha
+              </label>
+              <input name="senha" id="senha" placeholder="" value="" type="password" data-mini="true">
+          </div>
+          <a id="btn_entrar" data-role="button" data-inline="true" data-theme="b" href="#" data-icon="arrow-r" data-iconpos="right" onclick="login();">
+              Entrar
+          </a>
+      </div>
+  </div>
+</body>
+</html>

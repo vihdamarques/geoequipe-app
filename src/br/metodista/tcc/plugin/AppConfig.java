@@ -4,8 +4,10 @@ import org.apache.cordova.api.CallbackContext;
 import org.apache.cordova.api.CordovaPlugin;
 import org.json.JSONArray;
 import org.json.JSONException;
+
 import android.content.Context;
-import android.util.Log;
+import android.content.Intent;
+import android.net.Uri;
 import br.metodista.tcc.util.Storage;
 import br.metodista.tcc.util.Util;
 
@@ -31,11 +33,24 @@ public class AppConfig extends CordovaPlugin  {
         	Util.iniciaNotificacao(ctx);
         	return enviaSinal;
         } else if (action.equals("getEnviaSinal")) {
-        	Log.i("Servico", "getEnviaSinal: " + Storage.getEnviaSinal(ctx));
         	callbackContext.success(Storage.getEnviaSinal(ctx));
             return true;
+        } else if (action.equals("openMaps")) {
+        	String lat = args.getString(0)
+        		  ,lng = args.getString(1);
+
+        	ctx.startActivity(
+    			new Intent(
+    			    android.content.Intent.ACTION_VIEW,
+    			    Uri.parse("geo:"+lat+","+lng+"?q="+lat+","+lng)
+			    ).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+			);
+
+        	return true;
+        } else if (action.equals("updateNotification")){
+        	Util.iniciaNotificacao(ctx);
+        	return true;
         }
         return false;
     }
-
 }

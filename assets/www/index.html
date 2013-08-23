@@ -26,37 +26,19 @@
      document.addEventListener("deviceready", init, true);
      function init() {
        AppConfig.getUserId(function(retorno) {
-         if (!!retorno) $.mobile.changePage("lista_tarefas.html");
+         if (!retorno)
+           $.mobile.changePage("login.html");
+         else
+           $.mobile.changePage("lista_tarefas.html");
+
+        setTimeout(navigator.splashscreen.hide, 3000);
+
        }, function(){});
      }
   </script>
 
 </head>
 <body>
-<!-- Home -->
-<div data-role="page" id="page1">
-    <div data-theme="a" data-role="header">
-        <h3>
-            LOGIN
-        </h3>
-    </div>
-    <div data-role="content" id="result">
-        <div data-role="fieldcontain">
-            <label for="textinput1">
-                Usuário
-            </label>
-            <input name="usuario" id="usuario" placeholder="" value="" type="text" data-mini="true">
-        </div>
-        <div data-role="fieldcontain">
-            <label for="textinput2">
-                Senha
-            </label>
-            <input name="senha" id="senha" placeholder="" value="" type="password" data-mini="true">
-        </div>
-        <a id="btn_entrar" data-role="button" data-inline="true" data-theme="b" href="#" data-icon="arrow-r" data-iconpos="right" onclick="login();">
-            Entrar
-        </a>
-    </div>
-</div>
+  <div data-role="page" id="index"></div>
 </body>
 </html>

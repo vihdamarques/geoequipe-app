@@ -32,12 +32,16 @@ public class Util {
 		NotificationManager nm = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
 		nm.cancel(NOTIFICATION);
 	}
-	
+
 	public static void iniciaNotificacao(Context context){
-		if (Storage.getEnviaSinal(context).equals("on")){
-			Util.showNotification(context, Util.ICON_OK, "Envio de sinal ativo");
+		if (Storage.getUserId(context).equals("")) {
+			Util.showNotification(context, Util.ICON_FAIL, "Clique para fazer login");
 		} else {
-			Util.showNotification(context, Util.ICON_FAIL, "Envio de sinal inativo");
+			if (Storage.getEnviaSinal(context).equals("on")){
+				Util.showNotification(context, Util.ICON_OK, "Envio de sinal ativo");
+			} else {
+				Util.showNotification(context, Util.ICON_FAIL, "Envio de sinal inativo");
+			}
 		}
 	}
 

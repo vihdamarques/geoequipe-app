@@ -28,7 +28,7 @@ public class API {
 		this.rodar = true;
 	}
 
-    public String geraParametros(String imei, int user, double lat, double lng) {
+    public String geraParametros(String imei, String user, double lat, double lng) {
         JSONObject json = new JSONObject();
         try {
 	        json.put("imei", String.valueOf(imei));
@@ -48,7 +48,7 @@ public class API {
         //return Base64.encodeBytes(json.toString().getBytes());
     }
 
-    public void enviarSinal(final String imei, final int user, final double lat, final double lng) {
+    public void enviarSinal(final String imei, final String user, final double lat, final double lng) {
     	Log.i("Servico", "Enviando sinal...");
     	handler.post(new Runnable() {
             public void run() {
@@ -83,8 +83,8 @@ public class API {
     	return this.key;
     }
 
-    public int getUser(){
-    	return 1;
+    public String getUser(){
+    	return Storage.getUserId(this.ctx);
     }
 
 	public boolean getRodar() {

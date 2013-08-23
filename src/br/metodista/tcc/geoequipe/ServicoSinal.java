@@ -20,28 +20,37 @@ public class ServicoSinal extends Service {
 	public void onCreate() {
 		super.onCreate();
 		final Context ctx = this;
-		if (Storage.getEnviaSinal(ctx).equals("on")) {
+		if (podeMandarSinal(ctx)) {
 			Log.i("Servico", "Iniciou serviço Sinal");
 			Geolocation geo = new Geolocation(this);
 			Util.showNotification(ctx, Util.ICON_OK, "Obtendo localização...");
 	    	geo.getLocation(new Callback<Location>() {
 				public void run(Location coord) {
 					Log.i("Servico", "Resposta sinal. coord: " + coord);
-					if (coord != null) {
-						API api = new API(ctx);
-						api.enviarSinal (
-							api.getIMEI()
-						   ,api.getUser()
-						   ,coord.getLatitude()
-						   ,coord.getLongitude()
-						);
-					} else {
-						Util.showNotification(ctx, Util.ICON_FAIL, "Não foi possível obter localização");
+					if (podeMandarSinal(ctx)) {
+						if (coord != null) {
+							API api = new API(ctx);
+							api.enviarSinal (
+								api.getIMEI()
+							   ,api.getUser()
+							   ,coord.getLatitude()
+							   ,coord.getLongitude()
+							);
+						} else {
+							Util.showNotification(ctx, Util.ICON_FAIL, "Não foi possível obter localização");
+						}
 					}
-	
 					that.stopSelf();
 				}
 			});
+		}
+	}
+
+	private boolean podeMandarSinal(Context ctx) {
+		if (Storage.getEnviaSinal(ctx).equals("on") && !Storage.getUserId(ctx).equals("")) {
+			return true;
+		} else {
+			return false;
 		}
 	}
 
