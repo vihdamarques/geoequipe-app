@@ -47,10 +47,10 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".AlarmManagerSinal" android:enabled="true" android:exported="false">
+        <receiver android:name=".BroadcastReceiverSinal" android:enabled="true" android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
-                <action android:name="ALARM_MANAGER_SINAL"/>
+                <action android:name="BROADCAST_SINAL"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </receiver>

@@ -13,16 +13,16 @@ public class API {
 	private Context ctx;
 	private String  host = "http://geoequipe.aws.af.cm"; // http://10.0.2.2
 	private int     port = 80; // 3014
-	private String  key  = "G3@#qU1p";
 	private Handler handler = new Handler(Looper.getMainLooper());
 	private static boolean rodando;
 
-	public API(Context _ctx){
+	public API(Context _ctx) {
 		this.ctx    = _ctx;
 	}
 
     public String geraParametros(String imei, String user, double lat, double lng) {
         JSONObject json = new JSONObject();
+
         try {
 	        json.put("imei", String.valueOf(imei));
 	        json.put("user", String.valueOf(user));
@@ -36,9 +36,10 @@ public class API {
         } catch (JSONException e){
         	e.printStackTrace(System.out);
         }
-        Blowfish bf = new Blowfish(this.getKey());
-        return bf.encrypt(json.toString());
-        //return Base64.encodeBytes(json.toString().getBytes());
+
+        Blowfish bf = new Blowfish();
+        return bf.encrypt(json.toString()).replaceAll("\\/", "_").replaceAll("\\+", "-");
+        //return Base64.encodeBytes(json.toString().getBytes()).replaceAll("\\/", "_").replaceAll("\\+", "-");
     }
 
     public void enviarSinal(final String imei, final String user, final double lat, final double lng) {
@@ -46,37 +47,30 @@ public class API {
     	handler.post(new Runnable() {
             public void run() {
 		    	new EnviarSinal(ctx)
-		    	   .execute(getUrl("/sinal/" + geraParametros(imei, user, lat, lng)
-		    			                      .replaceAll("\\/", "_")
-		    			                      .replaceAll("\\+", "-")
-		    			                      ));
+		    	   .execute(getUrl("/sinal/" + geraParametros(imei, user, lat, lng)));
             }
          });
     }
 
-    public String getIMEI(){
+    public String getIMEI() {
     	TelephonyManager tm = (TelephonyManager) ctx.getSystemService(Context.TELEPHONY_SERVICE);
     	Log.i("Servico", "IMEI: " + tm.getDeviceId());
     	return tm.getDeviceId();
     }
 
-    public String getUrl(String param){
+    public String getUrl(String param) {
     	return getHost() + ":" + getPort() + param;
     }
 
-    public String getHost(){
+    public String getHost() {
     	return this.host;
     }
 
-    public int getPort(){
+    public int getPort() {
     	return this.port;
     }
 
-    private String getKey(){
-    	return this.key;
-    }
-
-    public String getUser(){
+    public String getUser() {
     	return Storage.getUserId(this.ctx);
     }
 

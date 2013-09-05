@@ -5,9 +5,16 @@ import javax.crypto.spec.SecretKeySpec;
 import br.metodista.tcc.util.Base64;
 
 public class Blowfish {
+
+	public final String PROJECT_KEY = "G3@#qU1p";
 	private String key;
+
 	public Blowfish(String _key){
 		this.key = _key;
+	}
+
+	public Blowfish(){
+		this.key = this.PROJECT_KEY;
 	}
 
     private String pad(String str) {

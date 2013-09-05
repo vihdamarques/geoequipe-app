@@ -1,25 +1,28 @@
-var AppConfig = {
+var AppUtil = {
     getUserId: function (success, fail) {
-      return cordova.exec(success, fail, "AppConfig", "getUserId", []);
+      return cordova.exec(success, fail, "AppUtil", "getUserId", []);
     }
    ,setUserId: function (userId) {
-      return cordova.exec(null, null, "AppConfig", "setUserId", [userId]);
+      return cordova.exec(null, null, "AppUtil", "setUserId", [userId]);
     }
    ,getEnviaSinal: function (success, fail) {
-      return cordova.exec(success, fail, "AppConfig", "getEnviaSinal", []);
+      return cordova.exec(success, fail, "AppUtil", "getEnviaSinal", []);
     }
    ,setEnviaSinalOn: function (success, fail) {
-      return cordova.exec(success, fail, "AppConfig", "setEnviaSinalOn", []);
+      return cordova.exec(success, fail, "AppUtil", "setEnviaSinalOn", []);
     }
    ,setEnviaSinalOff: function (success, fail) {
-      return cordova.exec(success, fail, "AppConfig", "setEnviaSinalOff", []);
+      return cordova.exec(success, fail, "AppUtil", "setEnviaSinalOff", []);
     }
    ,openMaps: function (lat, lng) {
-      return cordova.exec(null, null, "AppConfig", "openMaps", [lat, lng]);
+      return cordova.exec(null, null, "AppUtil", "openMaps", [lat, lng]);
     }
    ,updateNotification: function () {
-      return cordova.exec(null, null, "AppConfig", "updateNotification", []);
+      return cordova.exec(null, null, "AppUtil", "updateNotification", []);
     }
+  ,encrypt: function (data, success, fail) {
+      return cordova.exec(success, fail, "AppUtil", "encrypt", [data]);
+   }
 };
 
 function login() {
@@ -33,8 +36,8 @@ function login() {
                        } else {
                          if (data.id_usuario && data.id_usuario.length > 0) {
                            // save in local storage
-                           AppConfig.setUserId(data.id_usuario);
-                           AppConfig.updateNotification();
+                           AppUtil.setUserId(data.id_usuario);
+                           AppUtil.updateNotification();
                            // perform page transition 
                            $.mobile.changePage("lista_tarefas.html");
                          }
@@ -52,19 +55,20 @@ function login() {
 }
 
 function logout() {
-  AppConfig.setUserId("");
-  AppConfig.updateNotification();
-  $.mobile.changePage("login.html");
+  AppUtil.setUserId("");
+  AppUtil.updateNotification();
+  navigator.app.exitApp();
+  //$.mobile.changePage("login.html");
 }
 
 $(document).on("pageshow", "#configuracoes", function() {
   $("#enviaSinal").on("change", function() {
     if ($(this).val() == "on")
-      AppConfig.setEnviaSinalOn(null, null);
+      AppUtil.setEnviaSinalOn(null, null);
     else
-      AppConfig.setEnviaSinalOff(null, null);
+      AppUtil.setEnviaSinalOff(null, null);
   });
-  AppConfig.getEnviaSinal(function(retorno) {
+  AppUtil.getEnviaSinal(function(retorno) {
     $('#enviaSinal').val(retorno);
     $('#enviaSinal').slider('refresh');
   }, function(){});
@@ -75,7 +79,7 @@ $(document).on("pageshow", "#lista_tarefas", function() {
 });
 
 function init() {
-  AppConfig.getUserId(function(retorno) {
+  AppUtil.getUserId(function(retorno) {
     if (!retorno)
       $.mobile.changePage("login.html");
     else
@@ -96,7 +100,7 @@ function carregaTarefas() {
   var listatarefas = "";
 
   $.ajax({type: 'GET'
-         ,url: 'http://geoequipe.aws.af.cm/tarefa/consulta/' + (AppConfig.getUserId() || '0')
+         ,url: 'http://geoequipe.aws.af.cm/tarefa/consulta/' + (AppUtil.getUserId() || '0')
          ,dataType: 'json'
          ,async: true
          ,success: function(data) {
@@ -122,12 +126,12 @@ function carregaTarefas() {
                                '<div class="ui-grid-a">' +
                                  '<div class="ui-block-a">';
                                    if (!data.tarefas[i].apontamento) {
-                                     listatarefas += '<input type="submit" data-inline="true" data-theme="b" data-icon="check" data-iconpos="left" value="Concluir" data-mini="true" onclick="concluir();">';
+                                     listatarefas += '<input type="submit" data-inline="true" data-theme="b" data-icon="check" data-iconpos="left" value="Concluir" data-mini="true" onclick="concluirTarefa('+data.tarefas[i].id_tarefa+');">';
                                    }
                                  listatarefas += 
                                  '</div>' +
                                  '<div class="ui-block-b">' +
-                                   '<a href="javascript:;" onclick="AppConfig.openMaps(\'' + data.tarefas[i].coord.lat + '\',\'' + data.tarefas[i].coord.lng + '\')">' +
+                                   '<a href="javascript:;" onclick="AppUtil.openMaps(\'' + data.tarefas[i].coord.lat + '\',\'' + data.tarefas[i].coord.lng + '\')">' +
                                      '<div style=" text-align:right">' +
                                        '<img style="width: 40px; height: 40px" src="img/google-maps-icone.png">' +
                                      '</div>' +
@@ -153,11 +157,37 @@ function carregaTarefas() {
   });
 }
 
-function concluir() {
+function concluirTarefa(id_tarefa) {
   var apontamento = $("#apontamento").val();
-  if (!apontamento){
+  if (!apontamento) {
     alert('Insira um apontamento.');
   } else {
-    alert('Tarefa concluída.');
+    var dados = {};
+    dados.apontamento = apontamento;
+    dados.id_usuario  = AppUtil.getUserId();
+    dados.id_tarefa   = id_tarefa;
+    dados = AppUtil.encrypt(JSON.stringify(dados)).replace(/\+/g,'-').replace(/\//g,'_');
+
+    $.ajax({type: 'GET'
+           ,url: 'http://geoequipe.aws.af.cm/tarefa/concluir/' + dados
+           ,dataType: 'json'
+           ,success: function(data) {
+                       if (data) {
+                         if (data.erro && data.erro.length > 0) {
+                           alert(data.erro);
+                         } else {
+                           alert("Tarefa concluida com sucesso!");
+                           carregaTarefas();
+                         }
+                       } else {
+                         alert("Erro ao fazer login!");
+                       }
+            }
+           ,error: function (xhr, ajaxOptions, thrownError) {
+                alert("Erro ao fazer concluir tarefa: " + xhr.status + "\n" +
+                       "Mensagem: " + xhr.statusText + "\n" +
+                       "Resposta: " + xhr.responseText + "\n" + thrownError);
+            }
+    });
   }
 }

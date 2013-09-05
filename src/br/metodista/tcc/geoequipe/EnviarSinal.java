@@ -27,7 +27,7 @@ public class EnviarSinal extends AsyncTask<String, Void, String>{
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setConnectTimeout(60000);
             conn.setReadTimeout(60000);
-            responseCode = String.valueOf(conn.getResponseCode()); //Utilizado para solicitar a resposta
+            responseCode = String.valueOf(conn.getResponseCode()); // Utilizado para solicitar a resposta
             conn.disconnect();
 		} catch (MalformedURLException e) {
             System.out.println("Erro ao criar URL. Formato inválido.");

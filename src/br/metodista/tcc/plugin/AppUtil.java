@@ -7,10 +7,11 @@ import org.json.JSONException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import br.metodista.tcc.util.Blowfish;
 import br.metodista.tcc.util.Notify;
 import br.metodista.tcc.util.Storage;
 
-public class AppConfig extends CordovaPlugin  {
+public class AppUtil extends CordovaPlugin  {
 
 	private Context ctx;
 
@@ -48,6 +49,10 @@ public class AppConfig extends CordovaPlugin  {
         	return true;
         } else if (action.equals("updateNotification")){
         	Notify.iniciaNotificacao(ctx);
+        	return true;
+        } else if (action.equals("encrypt")) {
+        	Blowfish bf = new Blowfish();
+        	callbackContext.success(bf.encrypt(args.getString(0)));
         	return true;
         }
         return false;
