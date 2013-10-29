@@ -73,7 +73,7 @@ public class Geolocation {
         	Log.i("Servico", "Recebeu Sinal: " + location);
         	//Toast.makeText(context, "Recebeu Sinal: " + location + " \n Total de sinais: " + (sinais.size() + 1), Toast.LENGTH_LONG).show();
         	if (sinais.size() < 7) {
-        		if (location.getAccuracy() < 50) {
+        		if (location.getAccuracy() <= 40) {
         			Log.i("Servico", "adicionou sinal no array");
         			sinais.add(location);
         		}
@@ -98,8 +98,8 @@ public class Geolocation {
 				float accuracy = sinal.getAccuracy();
 				String provider = sinal.getProvider(); 
 				Log.i("Servico", "Precisão: " + accuracy);
-				if (((provider.equals("network") && accuracy < 40) || (provider.equals("gps") && accuracy < 30))
-						&& accuracy < bestAccuracy){
+				if (((provider.equals("network") && accuracy <= 40) || (provider.equals("gps") && accuracy < 30))
+						&& accuracy <= bestAccuracy){
 					candidate = sinal;
 					bestAccuracy = accuracy;
 				}

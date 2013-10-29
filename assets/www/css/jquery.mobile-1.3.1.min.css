@@ -1319,3 +1319,7 @@ width:auto}
 .ui-responsive-panel .ui-panel-dismiss-display-push{
 display:none}
 }
+
+.ui-title {
+    margin: .6em 10% .8em !important;
+}
