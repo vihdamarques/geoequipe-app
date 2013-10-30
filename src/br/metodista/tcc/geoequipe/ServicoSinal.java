@@ -22,7 +22,7 @@ public class ServicoSinal extends Service {
 		final Context ctx = this;
 		if (podeMandarSinal(ctx)) {
 			Log.i("Servico", "Iniciou serviço Sinal");
-			Geolocation geo = new Geolocation(this);
+			final Geolocation geo = new Geolocation(this);
 			Notify.obtendoLocalizacao(ctx);
 			API.setRunning();
 	    	geo.getLocation(new Callback<Location>() {
@@ -38,7 +38,7 @@ public class ServicoSinal extends Service {
 							   ,coord.getLongitude()
 							);
 						} else
-							Notify.erroLocalizacao(ctx);
+							Notify.erroLocalizacao(ctx, geo.getMotivo());
 					API.setNotRunning();
 					that.stopSelf();
 				}

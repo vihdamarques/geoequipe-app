@@ -9,6 +9,7 @@ import android.content.Context;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -21,6 +22,8 @@ public class Geolocation {
     private Timer              timer;
     private Context            context;
     private int                tempo;
+    private int                motivo = 0;
+    private WifiManager        wifiManager;
 
     public Geolocation(Context _context) {
     	this.context         = _context;
@@ -28,6 +31,11 @@ public class Geolocation {
     	this.network_enabled = false;
  		this.gps_enabled     = false;
  		this.tempo           = 1000 * 60;
+ 		this.wifiManager     = (WifiManager) this.context.getSystemService(Context.WIFI_SERVICE);
+    }
+
+    public int getMotivo(){
+    	return this.motivo;
     }
 
     public boolean getLocation(Callback<Location> c) {
@@ -56,14 +64,13 @@ public class Geolocation {
         	Log.i("Servico", "NETWORK: " + this.network_enabled);
     	} catch (Exception ex) {Log.i("Servico", "Erro NETWORK");}
 
-        if (!this.gps_enabled && !this.network_enabled)
-            return false;
+        if (!this.gps_enabled) this.motivo |= Notify.GPS_DISABLED;
+        if (wifiManager.getWifiState() != WifiManager.WIFI_STATE_ENABLED) this.motivo |= Notify.WIFI_DISABLED;
 
-        if (this.gps_enabled)
-            this.lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0, ll);
+        if (!this.gps_enabled && !this.network_enabled) return false;
 
-        if (this.network_enabled)
-            this.lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 0, ll);
+        if (this.gps_enabled) this.lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0, ll);
+        if (this.network_enabled) this.lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 0, ll);
 
         return true;
     }

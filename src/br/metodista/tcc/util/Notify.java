@@ -14,6 +14,8 @@ public class Notify {
 
 	public static int ICON_OK       = R.drawable.icon;
 	public static int ICON_FAIL     = R.drawable.icon_fail;
+	public static int WIFI_DISABLED = 1;
+	public static int GPS_DISABLED  = 2;
 
 	@SuppressWarnings("deprecation")
 	private static void showNotification(Context ctx, int icon, String text) {
@@ -59,8 +61,15 @@ public class Notify {
 		showNotification(ctx, ICON_OK, "Obtendo localização...");
 	}
 
-	public static void erroLocalizacao(Context ctx) {
-		showNotification(ctx, ICON_FAIL, "Não foi possível obter localização");
+	public static void erroLocalizacao(Context ctx, int motivo) {
+		if (motivo == (GPS_DISABLED | WIFI_DISABLED))
+			showNotification(ctx, ICON_FAIL, "Não localizado, habilite o Wifi e o GPS");
+		else if (motivo == GPS_DISABLED)
+			showNotification(ctx, ICON_FAIL, "Não localizado, habilite o GPS");
+		else if (motivo == WIFI_DISABLED)
+			showNotification(ctx, ICON_FAIL, "Não localizado, habilite o Wifi");
+		else
+			showNotification(ctx, ICON_FAIL, "Não foi possível obter localização");
 	}
 
 	public static void sinalEnviado(Context ctx) {
